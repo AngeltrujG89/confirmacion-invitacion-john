@@ -60,6 +60,7 @@ export class FormularioRegistroComponent implements OnInit { // Implementar OnIn
 			}
 		});
 	}
+	
 
 	buildForm() {
 		this.form = this.formBuilder.group({
