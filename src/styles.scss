@@ -1,1 +1,93 @@
 /* You can add global styles to this file, and also import other style files */
+/* Reset completo sin márgenes ni padding */
+@import url('https://fonts.googleapis.com/css2?family=Playwrite+ZA:wght@100..400&display=swap');
+
+/* ===== FUENTES ADICIONALES ===== */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:wght@400;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  /* Elimina barras de scroll si no las necesitas */
+}
+
+.nombre-elegante {
+  position: absolute;
+  top: 15%;
+  /* Posicionado al 15% desde la parte superior */
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-family: 'Playwrite ZA', 'Playfair Display', serif;
+  font-size: 3.8rem;
+  font-weight: 400;
+  font-optical-sizing: auto;
+  color: rgb(159, 104, 50);
+  text-shadow:
+    1px 1px 2px rgba(0, 0, 0, 0.7),
+    2px 2px 4px rgba(0, 0, 0, 0.5),
+    3px 3px 6px rgba(0, 0, 0, 0.3),
+    0 0 15px rgba(159, 104, 50, 0.2);
+  letter-spacing: 1px;
+  line-height: 1.1;
+  z-index: 10;
+}
+
+/* Ajustar el banner-container para mantener el espacio */
+.banner-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  /* Eliminamos margin-top ya que el nombre está posicionado absolutamente */
+}
+
+/* Versión con posición más precisa usando calc() */
+.nombre-elegante.precise {
+  top: calc(10% + 20px);
+  /* 10% desde arriba + 20px extra */
+}
+
+/* Versión usando unidades viewport */
+.nombre-elegante.vh-units {
+  top: 15vh;
+  /* 15% del alto de la ventana */
+}
+
+/* Responsive con porcentajes que se adaptan mejor */
+@media (max-width: 768px) {
+  .nombre-elegante {
+    font-size: 3.2rem;
+    top: 12%;
+    /* Un poco más bajo en móviles */
+  }
+}
+
+@media (max-width: 480px) {
+  .nombre-elegante {
+    font-size: 2.8rem;
+    top: 10%;
+    /* Más bajo aún en pantallas pequeñas */
+  }
+}
+
+/* Para pantallas muy grandes */
+@media (min-width: 1200px) {
+  .nombre-elegante {
+    font-size: 4.2rem;
+    top: 18%;
+    /* Un poco más alto en pantallas grandes */
+  }
+}

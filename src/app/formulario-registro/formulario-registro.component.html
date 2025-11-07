@@ -1,0 +1,145 @@
+<div class="fondo-completo">
+	<div class="contenedor-fondo"></div>
+
+	<div class="contenido">
+
+		<div class="nombre-elegante" *ngIf="!mostrarFormulario && !mostrarAgradecimiento">
+			40<br>Johnatan
+		</div>
+
+		<!-- O versión en negrita -->
+		<div class="nombre-elegante bold-version" *ngIf="!mostrarFormulario && !mostrarAgradecimiento">
+			40<br>Johnatan
+		</div>
+
+		<!-- O versión con animación -->
+		<div class="nombre-elegante animated" *ngIf="!mostrarFormulario && !mostrarAgradecimiento">
+			40<br>Johnatan
+		</div>
+
+		<!-- Banner inicial (visible inicialmente) -->
+		<div class="banner-container" *ngIf="!mostrarFormulario && !mostrarAgradecimiento" (click)="mostrarForm()">
+			<div class="banner">
+				<div class="icono-recordatorio">📅</div>
+				<h1 class="titulo-banner">RECORDATORIO</h1>
+				<p class="subtitulo-banner">Confirmar tu asistencia</p>
+				<p class="texto-evento">al evento!</p>
+				<div class="instruccion-tap">
+					<span>Toca la pantalla para continuar</span>
+					<div class="flecha-animada">👇</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Formulario (oculto inicialmente) -->
+		<div class="formulario-container" *ngIf="mostrarFormulario && !mostrarAgradecimiento" [@fadeIn]>
+			<h1 class="titulo">Confirmación de Asistencia</h1>
+
+			<form class="formulario" [formGroup]="form">
+
+				<!-- Nombre -->
+				<div class="campo">
+					<label for="nombre">Nombre completo *</label>
+					<input type="text" id="nombre" formControlName="nombre" required
+						placeholder="Ingresa tu nombre completo">
+					<div *ngIf="form?.get('nombre')?.invalid && form?.get('nombre')?.touched" class="error">
+						El nombre es requerido
+					</div>
+				</div>
+
+				<!-- ¿Come mariscos? -->
+				<div class="campo">
+					<label for="mariscos">¿Come mariscos? *</label>
+					<select id="mariscos" formControlName="mariscos" required>
+						<option value="" disabled selected>Selecciona una opción</option>
+						<option value="si">Sí, como mariscos</option>
+						<option value="no">No, no como mariscos</option>
+					</select>
+					<div *ngIf="form?.get('mariscos')?.invalid && form?.get('mariscos')?.touched" class="error">
+						Esta selección es requerida
+					</div>
+				</div>
+
+				<div class="campo" *ngIf="tipoInvitacion === 'individual'">
+					<label for="asistira">¿Asistirá? *</label>
+					<select id="asistira" formControlName="asistira" required>
+						<option value="" disabled selected>Selecciona una opción</option>
+						<option value="si">Sí, asistiré</option>
+						<option value="no">No, no podré asistir</option>
+					</select>
+					<div *ngIf="form?.get('asistira')?.invalid && form?.get('asistira')?.touched" class="error">
+						Esta selección es requerida
+					</div>
+				</div>
+
+				<!-- ¿Asistirá la segunda persona? -->
+				<div class="campo" *ngIf="tipoInvitacion === 'pareja'">
+					<label for="asistenciaAcompanante">¿Tu acompañante asistirá? *</label>
+					<select id="asistenciaAcompanante" formControlName="asistenciaAcompanante" required>
+						<option value="" disabled selected>Selecciona una opción</option>
+						<option value="si">Sí, asistirá conmigo</option>
+						<option value="solo">No, asistiré solo/a</option>
+						<option value="no">No, ninguno asistirá</option>
+					</select>
+					<div *ngIf="form?.get('asistenciaAcompanante')?.invalid && form?.get('asistenciaAcompanante')?.touched"
+						class="error">
+						Esta selección es requerida
+					</div>
+				</div>
+
+				<!-- Número de teléfono -->
+				<div class="campo">
+					<label for="telefono">Número de celular *</label>
+					<input type="tel" id="telefono" formControlName="telefono" required placeholder="Ej: 5551234567"
+						pattern="[0-9]{10}">
+					<small class="hint">Ingresa 10 dígitos sin espacios</small>
+					<div *ngIf="form?.get('telefono')?.invalid && form?.get('telefono')?.touched" class="error">
+						<div *ngIf="form?.get('telefono')?.errors?.['required']">El teléfono es requerido</div>
+						<div *ngIf="form?.get('telefono')?.errors?.['pattern']">Debe tener exactamente 10 dígitos</div>
+					</div>
+				</div>
+
+				<!-- Botón de enviar -->
+				<button type="submit" class="btn-enviar" [disabled]="!form || form.invalid"
+					(click)="enviarFormulario();">
+					Confirmar Asistencia
+				</button>
+
+			</form>
+		</div>
+
+		<!-- Banner de agradecimiento (después de enviar formulario) -->
+		<div class="banner-container" *ngIf="mostrarAgradecimiento" [@fadeIn]>
+			<div class="banner agradecimiento-banner">
+				<div class="icono-agradecimiento">🎊</div>
+				<h1 class="titulo-banner">¡Gracias por confirmar!</h1>
+
+				<div class="mensaje-agradecimiento">
+					<p class="texto-destacado">Te esperamos con mucha ilusión</p>
+
+					<div class="recordatorios">
+						<h3>Recomendaciones:</h3>
+						<ul>
+							<li>• Bloqueador solar</li>
+							<li>• Repelente de insectos</li>
+							<li>• Ropa cómoda</li>
+							<li>• Muchas ganas de divertirte</li>
+						</ul>
+					</div>
+
+					<div class="sugerencia-regalo">
+						<h3>Sugerencia de regalo:</h3>
+						<p>En lugar de un regalo tradicional,
+							te agradeceríamos un sobre con la cantidad
+							que consideres apropiada.</p>
+					</div>
+
+					<div class="mensaje-final">
+						<p>¡Nos vemos en la celebración!</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>

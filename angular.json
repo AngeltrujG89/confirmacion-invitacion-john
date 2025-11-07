@@ -29,6 +29,11 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "netlify.toml",
+                "input": ".",
+                "output": "/"
               }
             ],
             "styles": [
@@ -46,8 +51,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "300kB",
+                  "maximumError": "400kB"
                 }
               ],
               "outputHashing": "all"
