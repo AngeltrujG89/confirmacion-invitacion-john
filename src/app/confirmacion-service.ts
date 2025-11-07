@@ -1,6 +1,7 @@
 // services/confirmacion.service.ts
 import { Injectable } from '@angular/core';
-import { Firestore, collection, addDoc } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, collectionData } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -33,5 +34,10 @@ export class ConfirmacionService {
       console.error('❌ Error guardando confirmación:', error);
       return false;
     }
+  }
+
+  obtenerConfirmaciones(): Observable<any[]> {
+    const confirmacionesRef = collection(this.firestore, 'confirmacion-invitados');
+    return collectionData(confirmacionesRef, { idField: 'id' }) as Observable<any[]>;
   }
 }

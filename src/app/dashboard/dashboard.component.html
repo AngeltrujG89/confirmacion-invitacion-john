@@ -1,0 +1,57 @@
+<div class="dashboard">
+  <!-- Header -->
+  <header class="dashboard__header">
+    <div class="dashboard__title">
+      <h1>📋 Lista de Confirmaciones</h1>
+      <small class="dashboard__updated">Última actualización: {{ today | date:'short' }}</small>
+    </div>
+  </header>
+
+  <!-- Loading -->
+  <div *ngIf="cargando" class="dashboard__loading">Cargando datos...</div>
+
+  <!-- Stats -->
+  <section *ngIf="!cargando" class="dashboard__stats">
+    <div class="card card--primary">
+      <div class="card__label">Total registrados</div>
+      <div class="card__value">{{ confirmaciones.length }}</div>
+    </div>
+  </section>
+
+  <!-- Table -->
+  <section class="dashboard__table-wrap">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Teléfono</th>
+          <th>Mariscos</th>
+          <th>Asistirá</th>
+          <th>Acompañante</th>
+        </tr>
+      </thead>
+      <tbody class="table__body">
+        <tr *ngFor="let c of confirmaciones" class="table__row">
+          <td class="table__cell table__cell--bold">{{ c.nombre }}</td>
+          <td class="table__cell">{{ c.telefono }}</td>
+          <td class="table__cell">{{ c.mariscos }}</td>
+          <td class="table__cell">
+            <span
+              class="badge"
+              [ngClass]="{
+                'badge--yes': c.asistira === 'sí' || c.asistira === true,
+                'badge--no': c.asistira === 'no' || c.asistira === false,
+                'badge--unknown': !c.asistira
+              }"
+            >
+              {{ c.asistira || '—' }}
+            </span>
+          </td>
+          <td class="table__cell">{{ c.asistenciaAcompanante || '—' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Empty state -->
+</div>
