@@ -61,6 +61,8 @@ export class FormularioRegistroComponent implements OnInit { // Implementar OnIn
 				console.log('Código inválido o no proporcionado'); // Debug
 			}
 		});
+
+		this.configurarListeners();
 	}
 
 
@@ -71,6 +73,7 @@ export class FormularioRegistroComponent implements OnInit { // Implementar OnIn
 			mariscos: ['', [Validators.required]],
 			asistira: [''], // Para individual
 			asistenciaAcompanante: [''], // Para pareja - CORREGIDO el nombre
+			dosDias: [''],
 			codigoInvitacion: ['']
 		});
 	}
@@ -81,7 +84,7 @@ export class FormularioRegistroComponent implements OnInit { // Implementar OnIn
 
 		if (this.form.valid) {
 			// COMENTA temporalmente la parte de Firebase:
-			
+
 			const exito = await this.confirmacionService.guardarConfirmacion({
 				...this.form.value,
 				tipoInvitacion: this.tipoInvitacion,
@@ -94,7 +97,7 @@ export class FormularioRegistroComponent implements OnInit { // Implementar OnIn
 			} else {
 				alert('Error al enviar la confirmación. Por favor intenta nuevamente.');
 			}
-		
+
 
 			// SOLO muestra el agradecimiento por ahora
 			this.mostrarAgradecimiento = true;
@@ -180,5 +183,37 @@ export class FormularioRegistroComponent implements OnInit { // Implementar OnIn
 
 	esCodigoValido(): boolean {
 		return this.tipoInvitacion !== 'indefinido';
+	}
+
+	configurarListeners(): void {
+		// 🔹 Escucha cambios en "asistira"
+		this.form.get('asistira')?.valueChanges.subscribe((valor) => {
+			if (this.tipoInvitacion === 'individual') {
+				this.actualizarValidacionDosDias(valor);
+			}
+		});
+
+		// 🔹 Escucha cambios en "asistenciaAcompanante"
+		this.form.get('asistenciaAcompanante')?.valueChanges.subscribe((valor) => {
+			if (this.tipoInvitacion === 'pareja') {
+				this.actualizarValidacionDosDias(valor);
+			}
+		});
+	}
+
+	actualizarValidacionDosDias(valor: string): void {
+		const controlDosDias = this.form.get('dosDias');
+
+		if (valor !== 'no') {
+			// 🔹 Si el valor NO es "no", reset y vuelve obligatorio
+			controlDosDias?.reset();
+			controlDosDias?.setValidators([Validators.required]);
+			controlDosDias?.updateValueAndValidity();
+		} else {
+			// 🔹 Si el valor ES "no", limpiar y quitar validación
+			controlDosDias?.reset();
+			controlDosDias?.clearValidators();
+			controlDosDias?.updateValueAndValidity();
+		}
 	}
 }
