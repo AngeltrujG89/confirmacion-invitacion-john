@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core'; // Agregar OnInit
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ConfirmacionService } from '../confirmacion-service';
 
 export type TipoInvitacion = 'individual' | 'pareja' | 'indefinido';
 
@@ -31,7 +32,8 @@ export class FormularioRegistroComponent implements OnInit { // Implementar OnIn
 	constructor(
 		private formBuilder: FormBuilder,
 		private route: ActivatedRoute,
-		private router: Router
+		private router: Router,
+		private confirmacionService: ConfirmacionService
 	) { }
 
 	ngOnInit(): void {
@@ -60,7 +62,7 @@ export class FormularioRegistroComponent implements OnInit { // Implementar OnIn
 			}
 		});
 	}
-	
+
 
 	buildForm() {
 		this.form = this.formBuilder.group({
@@ -71,6 +73,41 @@ export class FormularioRegistroComponent implements OnInit { // Implementar OnIn
 			asistenciaAcompanante: [''], // Para pareja - CORREGIDO el nombre
 			codigoInvitacion: ['']
 		});
+	}
+
+	async enviarFormulario() {
+		console.log('Formulario enviado', this.form.value);
+		console.log('Formulario válido', this.form.valid);
+
+		if (this.form.valid) {
+			// COMENTA temporalmente la parte de Firebase:
+			
+			const exito = await this.confirmacionService.guardarConfirmacion({
+				...this.form.value,
+				tipoInvitacion: this.tipoInvitacion,
+				codigo: this.codigoInvitacion
+			});
+
+			if (exito) {
+				this.mostrarAgradecimiento = true;
+				this.mostrarFormulario = false;
+			} else {
+				alert('Error al enviar la confirmación. Por favor intenta nuevamente.');
+			}
+		
+
+			// SOLO muestra el agradecimiento por ahora
+			this.mostrarAgradecimiento = true;
+			this.mostrarFormulario = false;
+		} else {
+			// Marcar todos los campos como touched para mostrar errores
+			Object.keys(this.form.controls).forEach(key => {
+				const control = this.form.get(key);
+				if (control?.invalid) {
+					control.markAsTouched();
+				}
+			});
+		}
 	}
 
 	private validarCodigo(codigo: string): boolean {
@@ -112,24 +149,6 @@ export class FormularioRegistroComponent implements OnInit { // Implementar OnIn
 
 	mostrarForm(): void {
 		this.mostrarFormulario = true;
-	}
-
-	enviarFormulario() {
-		console.log('Formulario enviado', this.form.value); // Debug
-		console.log('Formulario válido', this.form.valid); // Debug
-
-		if (this.form.valid) {
-			this.mostrarAgradecimiento = true;
-			this.mostrarFormulario = false;
-		} else {
-			// Marcar todos los campos como touched para mostrar errores
-			Object.keys(this.form.controls).forEach(key => {
-				const control = this.form.get(key);
-				if (control?.invalid) {
-					control.markAsTouched();
-				}
-			});
-		}
 	}
 
 	// Para debug - ver el estado actual
